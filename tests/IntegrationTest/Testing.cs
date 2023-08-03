@@ -24,10 +24,10 @@ public class Testing
         _configuration = _factory.Services.GetRequiredService<IConfiguration>();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
 
-        //services.AddDbContext<BlogDataContext>(options =>
-        //{
-        //    options.UseInMemoryDatabase("BlogDb");
-        //});
+        services.AddDbContext<BlogDataContext>(options =>
+        {
+           options.UseInMemoryDatabase("BlogDb");
+        });
     }
 
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
