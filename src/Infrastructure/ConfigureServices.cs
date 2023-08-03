@@ -13,13 +13,7 @@ public static class ConfigureServices
     {
         services.AddSingleton(provider => configuration);
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-
-        services.AddDbContext<BlogDataContext>(options =>
-          options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-              builder => builder.MigrationsAssembly(typeof(BlogDataContext).Assembly.FullName)));
-
         services.AddScoped<IBlogDataContext>(provider => provider.GetRequiredService<BlogDataContext>());
-
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         return services;

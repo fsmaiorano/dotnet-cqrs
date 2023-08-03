@@ -12,7 +12,7 @@ public class Testing
 {
 
     private static WebApplicationFactory<Program> _factory = null!;
-    private static IConfiguration _configuration = null!;
+    // private static IConfiguration _configuration = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
 
     public Testing()
@@ -21,13 +21,8 @@ public class Testing
         services.AddLogging();
 
         _factory = new CustomWebApplicationFactory();
-        _configuration = _factory.Services.GetRequiredService<IConfiguration>();
+        // _configuration = _factory.Services.GetRequiredService<IConfiguration>();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
-
-        services.AddDbContext<BlogDataContext>(options =>
-        {
-           options.UseInMemoryDatabase("BlogDb");
-        });
     }
 
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

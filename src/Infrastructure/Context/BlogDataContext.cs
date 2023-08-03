@@ -50,30 +50,37 @@ public class BlogDataContext : DbContext, IBlogDataContext
     {
         optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
 
-        if (!string.IsNullOrEmpty(_configuration.GetConnectionString("DefaultConnection")))
+        if (AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
         {
-            Console.WriteLine($"Using SQL Server - ConnectionString: {_configuration.GetConnectionString("DefaultConnection")}");
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"),
-                builder => builder.MigrationsAssembly(typeof(BlogDataContext).Assembly.FullName));
+            optionsBuilder.UseInMemoryDatabase("BlogDb");
         }
         else
         {
-            Console.WriteLine($"Using SQL Server - ConnectionString: TestDb");
+            if (!string.IsNullOrEmpty(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                Console.WriteLine($"Using SQL Server - ConnectionString: {_configuration.GetConnectionString("DefaultConnection")}");
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"),
+                    builder => builder.MigrationsAssembly(typeof(BlogDataContext).Assembly.FullName));
+            }
+            else
+            {
+                Console.WriteLine($"Using SQL Server - ConnectionString: TestDb");
 
-            var solutionPath = GetSolutionPath().FullName ?? string.Empty;
-            var path = Path.Combine(solutionPath, "tests", "IntegrationTest", "bin", "Debug", "net7.0", "appsettings.json");
+                var solutionPath = GetSolutionPath().FullName ?? string.Empty;
+                var path = Path.Combine(solutionPath, "tests", "IntegrationTest", "bin", "Debug", "net7.0", "appsettings.json");
 
-            Console.WriteLine($"Using SQL Server TestDb - Path: {path}");
+                Console.WriteLine($"Using SQL Server TestDb - Path: {path}");
 
-            var testAppSettings = new ConfigurationBuilder()
-                     .AddJsonFile(path)
-                     .Build();
+                var testAppSettings = new ConfigurationBuilder()
+                         .AddJsonFile(path)
+                         .Build();
 
-            var connectionString = testAppSettings.GetConnectionString("DefaultConnection");
-            Console.WriteLine($"Using SQL Server TestDb - ConnectionString: {connectionString}");
+                var connectionString = testAppSettings.GetConnectionString("DefaultConnection");
+                Console.WriteLine($"Using SQL Server TestDb - ConnectionString: {connectionString}");
 
-            optionsBuilder
-                .UseSqlServer(connectionString, builder => builder.MigrationsAssembly(typeof(BlogDataContext).Assembly.FullName));
+                optionsBuilder
+                    .UseSqlServer(connectionString, builder => builder.MigrationsAssembly(typeof(BlogDataContext).Assembly.FullName));
+            }
         }
 
         base.OnConfiguring(optionsBuilder);

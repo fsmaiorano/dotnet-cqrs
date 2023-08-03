@@ -27,8 +27,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services
                 .Remove<DbContextOptions<BlogDataContext>>()
                 .AddDbContext<BlogDataContext>((sp, options) =>
-                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-                        builder => builder.MigrationsAssembly(typeof(BlogDataContext).Assembly.FullName)));
+                    options.UseInMemoryDatabase("BlogDb"));
 
             services.AddSingleton<IConfiguration>(builder.Configuration);
         });
