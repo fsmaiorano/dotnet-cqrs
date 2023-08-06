@@ -16,6 +16,7 @@ public class CategoryCreatedEventHandler : INotificationHandler<CategoryCreatedE
     public Task Handle(CategoryCreatedEvent notification, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Blog: {DomainEvent}", notification.GetType().Name);
+        _logger.LogDebug("Blog: {@DomainEvent}", notification);
 
         return Task.CompletedTask;
     }

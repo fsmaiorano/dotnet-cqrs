@@ -1,11 +1,11 @@
-﻿using System.Reflection;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using Infrastructure.Common;
 using Infrastructure.Interceptors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace Infrastructure.Context;
 
@@ -15,7 +15,7 @@ public class BlogDataContext : DbContext, IBlogDataContext
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-    public BlogDataContext() : base()
+    public BlogDataContext(DbContextOptions<BlogDataContext> options) : base(options)
     {
 
     }
@@ -23,7 +23,7 @@ public class BlogDataContext : DbContext, IBlogDataContext
     public BlogDataContext(
        DbContextOptions<BlogDataContext> options,
        IMediator mediator,
-        IConfiguration configuration,
+       IConfiguration configuration,
        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options)
     {
         _mediator = mediator;

@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using Application.Common.Behaviours;
+﻿using Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using System.Reflection;
 
 namespace Application;
 public static class ConfigureServices
@@ -22,15 +22,27 @@ public static class ConfigureServices
 
         });
 
-        var logPath = Path.Combine(Directory.GetCurrentDirectory(), "Logs", "log-.txt");
+        if (AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
+        {
+            var logPath = Path.Combine(Directory.GetCurrentDirectory(), "Logs", "log-.txt");
+            Log.Logger = new LoggerConfiguration()
+                               .MinimumLevel.Information()
+                               .WriteTo.Console()
+                               .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+                               .CreateLogger();
 
-        Log.Logger = new LoggerConfiguration()
-           .MinimumLevel.Error()
-           .WriteTo.Console()
-           .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
-           .CreateLogger();
+            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+        }
+        else
+        {
+            var logPath = Path.Combine(Directory.GetCurrentDirectory(), "Logs", "log-.txt");
+            Log.Logger = new LoggerConfiguration()
+                             .MinimumLevel.Error()
+                             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+                             .CreateLogger();
 
-        services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+        }
 
         return services;
     }

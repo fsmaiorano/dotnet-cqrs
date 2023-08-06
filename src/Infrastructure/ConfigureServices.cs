@@ -12,9 +12,18 @@ public static class ConfigureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton(provider => configuration);
+
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-        services.AddScoped<IBlogDataContext>(provider => provider.GetRequiredService<BlogDataContext>());
         services.AddScoped<ApplicationDbContextInitialiser>();
+        services.AddScoped<IBlogDataContext>(provider => provider.GetRequiredService<BlogDataContext>());
+
+        if (!AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
+        {
+            services.AddDbContext<BlogDataContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
+        }
 
         return services;
     }

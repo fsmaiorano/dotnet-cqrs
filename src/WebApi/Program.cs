@@ -1,8 +1,7 @@
-using System.Diagnostics;
 using Application;
 using Infrastructure;
 using Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
