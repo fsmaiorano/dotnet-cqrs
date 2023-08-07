@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Infrastructure.Authentication;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Services;
@@ -13,6 +14,7 @@ public static class ConfigureServices
         //services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         services.AddHttpContextAccessor();
 

@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Infrastructure.Authentication;
 using Infrastructure.Context;
 using Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
