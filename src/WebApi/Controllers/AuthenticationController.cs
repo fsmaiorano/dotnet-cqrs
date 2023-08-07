@@ -14,10 +14,8 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> IndexAsync(string email, string password)
+        public async Task<ActionResult> IndexAsync([FromQuery] GetAuthUserQuery query)
         {
-            var query = new GetUserQuery();
-
             var user = await Mediator.Send(query);
 
             //var token = await _authService.HandleUserAuthentication(command);
