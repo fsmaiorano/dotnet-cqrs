@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E53F7B35-E848-473A-97EB-BF302F880ED3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTest", "tests\IntegrationTest\IntegrationTest.csproj", "{DCB3A75F-7363-46F9-A028-EED54E3C9536}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTest", "tests\IntegrationTest\IntegrationTest.csproj", "{DCB3A75F-7363-46F9-A028-EED54E3C9536}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "src\WebApi\WebApi.csproj", "{5EAE3CF9-FB95-4475-97AE-506788E5AD94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI", "src\WebApi\WebUI.csproj", "{5EAE3CF9-FB95-4475-97AE-506788E5AD94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
