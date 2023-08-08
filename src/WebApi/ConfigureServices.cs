@@ -9,7 +9,7 @@ namespace WebApi;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddWebUIServices(this IServiceCollection services)
+    public static IServiceCollection AddWebApiServices(this IServiceCollection services)
     {
         //services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.UseCases.User.Queries.GetUser;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApi.Controllers
 {
@@ -14,6 +15,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> IndexAsync([FromQuery] GetAuthUserQuery query)
         {
             var user = await Mediator.Send(query);

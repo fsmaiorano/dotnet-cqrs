@@ -11,18 +11,23 @@ namespace WebApi.Controllers;
 public class PostController : BaseController
 {
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<int>> Create(CreatePostCommand command)
     {
-        return await Mediator.Send(command);
+        return Ok(await Mediator.Send(command));
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginatedList<PostEntity>>> GetWithPagination([FromQuery] GetPostWithPaginationQuery query)
     {
-        return await Mediator.Send(query);
+        return Ok(await Mediator.Send(query));
     }
 
     [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
     public async Task<ActionResult> Update(int id, UpdatePostCommand command)
     {
         if (id != command.Id)
@@ -34,6 +39,8 @@ public class PostController : BaseController
     }
 
     [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesDefaultResponseType]
     public async Task<ActionResult> Delete(int id)
     {
         await Mediator.Send(new DeletePostCommand(id));
