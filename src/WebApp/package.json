@@ -1,0 +1,14 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "css:dev": "npx tailwindcss -i ./Assets/Styles/styles.scss -o ./wwwroot/css/styles.css --watch",
+    "css:build": "npx tailwindcss -i ./Assets/Styles/styles.scss -o ./wwwroot/css/styles.css --minify"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}

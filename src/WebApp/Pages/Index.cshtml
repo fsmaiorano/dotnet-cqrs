@@ -1,0 +1,18 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<environment include="Development">
+    <link rel="stylesheet" href="~/css/Index.css" asp-append-version="true" />
+</environment>
+<environment exclude="Development">
+    <link rel="stylesheet" href="~/css/Index.min.css" asp-append-version="true" />
+</environment>
+
+
+
+<div>
+    <h1 class="text-green-200">teste</h1>
+</div>
