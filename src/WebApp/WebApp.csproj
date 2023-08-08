@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Assets\Styles\styles.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BuildWebCompiler2022" Version="1.14.10" />
     <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.384" />
     <PackageReference Include="LigerShark.WebOptimizer.Sass" Version="3.0.99" />
@@ -14,6 +18,10 @@
   
   <ItemGroup>
     <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
   <Target Name="Tailwind" BeforeTargets="Build">
