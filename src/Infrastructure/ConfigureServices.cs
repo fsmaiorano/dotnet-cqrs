@@ -17,7 +17,7 @@ public static class ConfigureServices
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddScoped<IBlogDataContext>(provider => provider.GetRequiredService<BlogDataContext>());
-
+        
         if (!AppDomain.CurrentDomain.FriendlyName.Contains("testhost"))
         {
             services.AddDbContext<BlogDataContext>(options =>

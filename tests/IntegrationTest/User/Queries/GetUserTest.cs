@@ -3,6 +3,7 @@ using Bogus;
 using Domain.Entities;
 
 namespace IntegrationTest.User.Queries;
+
 [TestClass]
 public class GetUserTest : Testing
 {

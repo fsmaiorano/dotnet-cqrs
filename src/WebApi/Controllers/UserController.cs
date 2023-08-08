@@ -17,7 +17,7 @@ public class UserController : BaseController
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaginatedList<UserEntity>>> GetWithPagination([FromQuery] GetUserWithPaginationQuery query)
+    public async Task<ActionResult<PaginatedList<UserDto>>> GetWithPagination([FromQuery] GetUserWithPaginationQuery query)
     {
         return await Mediator.Send(query);
     }

@@ -1,0 +1,12 @@
+﻿using Application.Common.Mapping;
+using Domain.Entities;
+
+namespace Application.UseCases.User.Queries.GetUser
+{
+    public class UserAuthenticationDto : IMapFrom<UserEntity>
+    {
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? PasswordHash { get; set; }
+    }
+}

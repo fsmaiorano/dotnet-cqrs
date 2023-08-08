@@ -1,13 +1,20 @@
-﻿using Bogus;
+﻿using Application.Common.Interfaces;
+using Application.UseCases.User.Queries.GetUser;
+using Bogus;
 using Domain.Entities;
 
-namespace IntegrationTest;
+namespace IntegrationTest.User.Queries;
 
 [TestClass]
 public class GetAuthUserTest : Testing
 {
     private readonly string email = "auth@test.com";
     private readonly string password = "123456";
+
+
+    public GetAuthUserTest()
+    {
+    }
 
     [TestInitialize]
     public async Task TestInitialize()
@@ -24,11 +31,17 @@ public class GetAuthUserTest : Testing
         await AddAsync(userEntity);
     }
 
-    // [TestMethod]
-    // public async Task ShouldGenerateToken()
-    // [
-    //     var query = new GetAuthUserQuery()
-    // {
-    //     Email = "  
-    // ]
+    [TestMethod]
+    public async Task ShouldGenerateToken()
+    {
+        var query = new GetAuthUserQuery() { Email = email, PasswordHash = password };
+
+        var storedUser = await SendAsync(query);
+
+        Assert.IsNotNull(storedUser);
+
+        var userToken = await _authService.HandleUserAuthentication(storedUser!);
+
+        Assert.IsNotNull(userToken);
+    }
 }

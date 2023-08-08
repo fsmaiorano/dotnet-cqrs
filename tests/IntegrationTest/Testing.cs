@@ -1,10 +1,9 @@
-﻿using Infrastructure.Context;
+﻿using Application.Common.Interfaces;
+using Infrastructure.Context;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace IntegrationTest;
 
@@ -15,6 +14,8 @@ public class Testing
     // private static IConfiguration _configuration = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
 
+    public readonly IAuthService _authService;
+
     public Testing()
     {
         var services = new ServiceCollection();
@@ -23,6 +24,9 @@ public class Testing
         _factory = new CustomWebApplicationFactory();
         // _configuration = _factory.Services.GetRequiredService<IConfiguration>();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
+
+        using var scope = _scopeFactory.CreateScope();
+        _authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
     }
 
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

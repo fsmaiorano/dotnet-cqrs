@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.UseCases.User.Queries.GetUser;
 
-public record GetAuthUserQuery : IRequest<UserDto?>
+public record GetAuthUserQuery : IRequest<UserAuthenticationDto?>
 {
-    public string? Email { get; set; }
-    public string? Password { get; set; }
+    public required string Email { get; set; }
+    public required string PasswordHash { get; set; }
 };
 
-public class GetAuthUsersQueryHandler : IRequestHandler<GetAuthUserQuery, UserDto?>
+public class GetAuthUsersQueryHandler : IRequestHandler<GetAuthUserQuery, UserAuthenticationDto?>
 {
     private readonly IMapper _mapper;
     private readonly IBlogDataContext _context;
@@ -23,8 +23,13 @@ public class GetAuthUsersQueryHandler : IRequestHandler<GetAuthUserQuery, UserDt
         _mapper = mapper;
     }
 
-    public async Task<UserDto?> Handle(GetAuthUserQuery request, CancellationToken cancellationToken)
+    public async Task<UserAuthenticationDto?> Handle(GetAuthUserQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Users.ProjectTo<UserDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
+        var storedUser = await _context.Users.ProjectTo<UserAuthenticationDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
+
+        if (storedUser is null || !request.PasswordHash.Equals(storedUser.PasswordHash))
+            return null;
+
+        return storedUser;
     }
 }

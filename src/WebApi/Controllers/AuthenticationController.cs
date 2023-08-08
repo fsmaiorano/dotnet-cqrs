@@ -18,9 +18,12 @@ namespace WebApi.Controllers
         {
             var user = await Mediator.Send(query);
 
-            //var token = await _authService.HandleUserAuthentication(command);
+            if (user == null)
+                return BadRequest("Invalid credentials");
 
-            return Ok("");
+            var token = await _authService.HandleUserAuthentication(user);
+
+            return Ok(token);
         }
     }
 }
