@@ -1,6 +1,5 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using WebApp.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApp.Services;
 
 namespace WebApp.Controllers;
 
@@ -18,8 +17,10 @@ public class AuthenticationController : Controller
         return View();
     }
 
-    public IActionResult HandleAuthentication(string email, string password)
+    public async Task<IActionResult> HandleAuthentication(string email, string password)
     {
+        var x = await AuthenticationService.GetAuthenticationUrl(email, password);
+
         return View();
     }
 }

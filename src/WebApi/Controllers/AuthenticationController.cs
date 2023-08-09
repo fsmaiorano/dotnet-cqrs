@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.UseCases.User.Queries.GetUser;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 
 namespace WebApi.Controllers
 {
@@ -23,7 +22,7 @@ namespace WebApi.Controllers
             var user = await Mediator.Send(query);
 
             if (user == null)
-                return BadRequest("Invalid credentials");
+                return BadRequest(ResponseBadRequest("Invalid Credentials"));
 
             var token = await _authService.HandleUserAuthentication(user);
 
