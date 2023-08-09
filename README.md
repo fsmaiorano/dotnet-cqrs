@@ -24,6 +24,7 @@ The implementation between the Api and the rest of the application is built with
 - [x] Read a blog post
 - [x] Update a blog post
 - [x] Delete a blog post
+- [ ] Set public/privete the blog post (by author)
 
 - [x] Create a Tag
 - [x] Read a Tag
@@ -56,6 +57,12 @@ The implementation between the Api and the rest of the application is built with
 - [ ] Should be able to search for a blog post by category
 - [ ] Should be able to search for a blog post by tag
 - [ ] Should be able to search for a blog post by author
+- [ ] Should be able to search all posts of an user or author
 
-- [ ] Should be able to search for a user by name
+- [ ] Should be able comment a post
+- [ ] Should be able reply an comment in an post
+- [ ] Should be able delete a comment in an post (by author of comment or author of the post)
+- [ ] Should be able update a comment in an post (by author of commment)
+
+
 - [ ] Should be able to search for a user by email
