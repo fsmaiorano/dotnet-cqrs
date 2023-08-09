@@ -1,34 +1,41 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebApp</title>
-    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
-    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+      <link
+        rel="stylesheet"
+        href="~/css/styles.css"
+        asp-append-version="true"
+      />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+      <link
+        rel="stylesheet"
+        href="~/css/styles.css"
+        asp-append-version="true"
+      />
     </environment>
-    <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
-</head>
-<body>
-   
-    <div>
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <link
+      rel="stylesheet"
+      href="~/WebApp.styles.css"
+      asp-append-version="true"
+    />
+  </head>
+  <body>
+    @{
+        await Html.RenderPartialAsync("_Header");
+    }
 
-    @* <footer>
-        <div >
-            &copy; 2023 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer> *@
+    <main role="main" class="bg-gray-200 min-h-screen">@RenderBody()</main>
+
+    @* <footer> <div > &copy; 2023 - WebApp - <a asp-area=""
+    asp-controller="Home" asp-action="Privacy">Privacy</a> </div> </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-</body>
+  </body>
 </html>
+
