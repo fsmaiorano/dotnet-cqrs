@@ -20,8 +20,8 @@ public abstract class BaseController : ControllerBase
 
     }
 
-    public string ResponseBadRequest(string message)
-    {
-        return JsonConvert.SerializeObject(new BadRequestError() { Message = message });
-    }
+    // public string ResponseBadRequest(string message)
+    // {
+    //     return JsonConvert.SerializeObject(new BadRequestError() { Message = message });
+    // }
 }
