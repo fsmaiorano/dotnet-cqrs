@@ -27,14 +27,14 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>
 
     public async Task<int> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
-        var entity = new PostEntity
+        var entity = new PostEntity(
+                        title: request.Title!,
+                        body: request.Body!,
+                        categoryId: request.CategoryId,
+                        authorId: request.AuthorId)
         {
-            CategoryId = request.CategoryId,
-            AuthorId = request.AuthorId,
-            Title = request.Title,
             Summary = request.Summary,
-            Body = request.Body,
-            Slug = request.Slug,
+            Slug = request.Slug
         };
 
         if (request.Tags is not null && request.Tags.Any())
