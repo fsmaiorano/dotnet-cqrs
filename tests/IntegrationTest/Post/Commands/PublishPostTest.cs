@@ -1,28 +1,55 @@
 ﻿using Application.UseCases.Category.Commands.CreateCategory;
 using Application.UseCases.Post.Commands.CreatePost;
-using Application.UseCases.Post.Queries.GetPost;
+using Application.UseCases.Post.Commands.UpdatePost;
 using Application.UseCases.Tag.Commands.CreateTag;
 using Application.UseCases.User.Commands.CreateUser;
 using Bogus;
+using Domain.Entities;
 
-namespace IntegrationTest.Post.Queries;
+namespace IntegrationTest.Post.Commands;
 
 [TestClass]
-public class GetPostTest : Testing
+public class PublishPostTest : Testing
 {
-    private int _createdId;
-
     [TestInitialize]
-    public async Task TestInitialize()
+    public void TestInitialize()
+    {
+
+    }
+
+    [TestMethod]
+    public async Task ShouldPublishPost()
+    {
+        var createPostCommand = await GenerateCreatePostCommand();
+
+        var createdPostId = await SendAsync(createPostCommand);
+        Assert.IsNotNull(createdPostId);
+        Assert.IsTrue(createdPostId > 0);
+
+        var publishPostCommand = new PublishPostCommand()
+        {
+            Id = createdPostId,
+            IsPublished = true
+        };
+
+        await SendAsync(publishPostCommand);
+
+        var storedPost = await FindAsync<PostEntity>(createdPostId);
+        Assert.IsTrue(storedPost!.IsPublished);
+        Assert.IsNotNull(storedPost.UpdateDate);
+    }
+
+    [DataTestMethod]
+    public static async Task<CreatePostCommand> GenerateCreatePostCommand()
     {
         var createUserCommand = new Faker<CreateUserCommand>()
-                        .RuleFor(x => x.Name, f => f.Person.FirstName)
-                        .RuleFor(x => x.Email, f => f.Person.Email)
-                        .RuleFor(x => x.Bio, f => f.Lorem.Sentence())
-                        .RuleFor(x => x.Slug, f => f.Person.UserName)
-                        .RuleFor(x => x.Image, f => f.Image.PicsumUrl())
-                        .RuleFor(x => x.PasswordHash, f => f.Internet.Password())
-                        .Generate();
+                       .RuleFor(x => x.Name, f => f.Person.FirstName)
+                       .RuleFor(x => x.Email, f => f.Person.Email)
+                       .RuleFor(x => x.Bio, f => f.Lorem.Sentence())
+                       .RuleFor(x => x.Slug, f => f.Person.UserName)
+                       .RuleFor(x => x.Image, f => f.Image.PicsumUrl())
+                       .RuleFor(x => x.PasswordHash, f => f.Internet.Password())
+                       .Generate();
 
         var createTagCommand = new Faker<CreateTagCommand>()
                        .RuleFor(x => x.Name, f => f.Commerce.Categories(1)[0])
@@ -49,36 +76,6 @@ public class GetPostTest : Testing
         createPostCommand.CategoryId = createdCategoryId;
         createPostCommand.Tags = new List<int> { createdTagId };
 
-        var createdId = await SendAsync(createPostCommand);
-        _createdId = createdId;
-    }
-
-    [TestMethod]
-    public async Task ShouldReturnAllPost()
-    {
-        var query = new GetPostQuery();
-        var result = await SendAsync(query);
-
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Count > 0);
-    }
-
-
-    [TestMethod]
-    public async Task ShouldReturnPaginatedListWithPost()
-    {
-        var query = new GetPostWithPaginationQuery() { PageSize = 9999, PageNumber = 1 };
-        var result = await SendAsync(query);
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Items.Count > 0);
-    }
-
-    [TestMethod]
-    public async Task ShouldReturnPostById()
-    {
-        var query = new GetPostByIdQuery() { Id = _createdId };
-        var result = await SendAsync(query);
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Id == _createdId);
+        return createPostCommand;
     }
 }
