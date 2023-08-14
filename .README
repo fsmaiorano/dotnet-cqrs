@@ -24,7 +24,6 @@ The implementation between the Api and the rest of the application is built with
 - [x] Read a blog post
 - [x] Update a blog post
 - [x] Delete a blog post
-- [ ] Set public/private the blog post (by author)
 - [ ] Set published/not published the blog post (by author)
 
 - [x] Create a Tag
