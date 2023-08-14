@@ -11,14 +11,14 @@ public class GetTagTest : Testing
     public async Task TestInitialize()
     {
         var tagEntity = new Faker<TagEntity>()
-                         .RuleFor(x => x.Name, f => f.Commerce.Categories(1)[0])
+                         .CustomInstantiator(f => new TagEntity(f.Commerce.Categories(1)[0]))
                          .RuleFor(x => x.Slug, f => f.Commerce.Categories(1)[0])
                          .Generate();
 
         await AddAsync(tagEntity);
 
         tagEntity = new Faker<TagEntity>()
-                               .RuleFor(x => x.Name, f => f.Commerce.Categories(1)[0])
+                               .CustomInstantiator(f => new TagEntity(f.Commerce.Categories(1)[0]))
                                .RuleFor(x => x.Slug, f => f.Commerce.Categories(1)[0])
                                .Generate();
 

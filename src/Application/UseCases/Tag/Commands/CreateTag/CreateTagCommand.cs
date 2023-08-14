@@ -24,9 +24,8 @@ public class CreateTagCommandHandler : IRequestHandler<CreateTagCommand, int>
     {
         try
         {
-            var entity = new TagEntity
+            var entity = new TagEntity(name: request.Name!)
             {
-                Name = request.Name,
                 Slug = request.Slug
             };
 

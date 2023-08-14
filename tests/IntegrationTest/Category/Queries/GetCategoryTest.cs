@@ -11,14 +11,14 @@ public class GetCategoryTest : Testing
     public async Task TestInitialize()
     {
         var categoryEntity = new Faker<CategoryEntity>()
-                         .RuleFor(x => x.Name, f => f.Commerce.Categories(1)[0])
-                         .RuleFor(x => x.Slug, f => f.Commerce.Categories(1)[0])
-                         .Generate();
+                               .CustomInstantiator(f => new CategoryEntity(f.Commerce.Categories(1)[0]))
+                               .RuleFor(x => x.Slug, f => f.Commerce.Categories(1)[0])
+                               .Generate();
 
         await AddAsync(categoryEntity);
 
         categoryEntity = new Faker<CategoryEntity>()
-                               .RuleFor(x => x.Name, f => f.Commerce.Categories(1)[0])
+                               .CustomInstantiator(f => new CategoryEntity(f.Commerce.Categories(1)[0]))
                                .RuleFor(x => x.Slug, f => f.Commerce.Categories(1)[0])
                                .Generate();
 

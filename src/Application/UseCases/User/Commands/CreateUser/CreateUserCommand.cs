@@ -26,13 +26,10 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
 
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var entity = new UserEntity
+        var entity = new UserEntity(name: request.Name!, email: request.Email!, passwordHash: request.PasswordHash!)
         {
             Bio = request.Bio,
-            Email = request.Email,
             Image = request.Image,
-            Name = request.Name,
-            PasswordHash = request.PasswordHash,
             Slug = request.Slug
         };
 

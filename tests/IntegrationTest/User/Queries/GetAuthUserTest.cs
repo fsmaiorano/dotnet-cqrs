@@ -20,6 +20,7 @@ public class GetAuthUserTest : Testing
     public async Task TestInitialize()
     {
         var userEntity = new Faker<UserEntity>()
+                         .CustomInstantiator(f => new UserEntity(f.Person.UserName, f.Person.Email, f.Random.Hash(64)))
                          .RuleFor(x => x.Name, f => f.Person.FirstName)
                          .RuleFor(x => x.Email, f => email)
                          .RuleFor(x => x.Bio, f => f.Lorem.Sentence())
