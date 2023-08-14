@@ -2,13 +2,15 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.UseCases.Post.Commands.UpdatePost;
 
 public record PublishPostCommand : IRequest
 {
-    public int Id { get; set; }
-    public bool IsPublished { get; set; }
+    public required int Id { get; set; }
+    public required int AuthorId { get; set; }
+    public required bool IsPublished { get; set; }
 }
 
 public class PublishPostCommandHandler : IRequestHandler<PublishPostCommand>
@@ -22,10 +24,13 @@ public class PublishPostCommandHandler : IRequestHandler<PublishPostCommand>
 
     public async Task Handle(PublishPostCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Posts.FindAsync(new object[] { request.Id, }, cancellationToken);
+        var entity = await _context.Posts.Where(x => x.Id == request.Id && x.AuthorId == request.AuthorId).SingleOrDefaultAsync(cancellationToken);
 
         if (entity == null)
-            throw new NotFoundException(nameof(UserEntity), request.Id);
+            throw new NotFoundException(nameof(UserEntity), $"{request.Id} - {request.AuthorId}");
+
+        if (entity.AuthorId != request.AuthorId)
+            throw new ForbiddenAccessException();
 
         entity.Publish();
 

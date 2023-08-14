@@ -29,6 +29,7 @@ public class PublishPostTest : Testing
         var publishPostCommand = new PublishPostCommand()
         {
             Id = createdPostId,
+            AuthorId = createPostCommand.AuthorId,
             IsPublished = true
         };
 

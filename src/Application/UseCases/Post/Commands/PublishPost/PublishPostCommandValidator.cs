@@ -8,5 +8,8 @@ public class PublishPostCommandValidator : AbstractValidator<PublishPostCommand>
     {
         RuleFor(x => x.Id)
             .NotEmpty();
+
+        RuleFor(x => x.AuthorId)
+        .NotEmpty();
     }
 }
