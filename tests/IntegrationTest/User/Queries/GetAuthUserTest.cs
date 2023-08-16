@@ -1,5 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.UseCases.User.Queries.GetUser;
+﻿using Application.UseCases.User.Queries.GetUser;
 using Bogus;
 using Domain.Entities;
 
@@ -10,7 +9,6 @@ public class GetAuthUserTest : Testing
 {
     private readonly string email = "auth@test.com";
     private readonly string password = "123456";
-
 
     public GetAuthUserTest()
     {
@@ -41,7 +39,7 @@ public class GetAuthUserTest : Testing
 
         Assert.IsNotNull(storedUser);
 
-        var userToken = await _authService.HandleUserAuthentication(storedUser!);
+        var userToken = await _authService.GenerateToken(storedUser!);
 
         Assert.IsNotNull(userToken);
     }

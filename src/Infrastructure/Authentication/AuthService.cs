@@ -17,7 +17,7 @@ namespace Infrastructure.Authentication
             _config = config;
         }
 
-        public async Task<string?> HandleUserAuthentication(UserAuthenticationDto user)
+        public async Task<string?> GenerateToken(UserAuthenticationDto user)
         {
             try
             {
@@ -29,6 +29,7 @@ namespace Infrastructure.Authentication
                     Subject = new ClaimsIdentity(new[]
                     {
                 new Claim("Id", Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()!),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Name!),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti,
@@ -51,6 +52,31 @@ namespace Infrastructure.Authentication
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        public async Task<bool> ValidateToken(string token)
+        {
+            try
+            {
+                var issuer = _config["Jwt:Issuer"];
+                var audience = _config["Jwt:Audience"];
+                var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]!);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                }, out SecurityToken validatedToken);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

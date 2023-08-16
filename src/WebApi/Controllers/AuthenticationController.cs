@@ -25,7 +25,7 @@ namespace WebApi.Controllers
             if (user == null)
                 return BadRequest(new BadRequestError() { Message = "Invalid Credentials" });
 
-            var token = await _authService.HandleUserAuthentication(user);
+            var token = await _authService.GenerateToken(user);
 
             return Ok(token);
         }

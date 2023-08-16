@@ -77,4 +77,11 @@ public class Testing
 
         return await context.Set<TEntity>().CountAsync();
     }
+
+    public static HttpClient CreateHttpClient()
+    {
+        // using var application = new CustomWebApplicationFactory();
+        // using var client = application.CreateClient();
+        return _factory.CreateClient();
+    }
 }
