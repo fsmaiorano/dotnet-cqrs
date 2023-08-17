@@ -29,7 +29,7 @@ public class CreateCategoryTest : Testing
     {
         var createCategoryCommand = GenerateCreateCategoryCommand();
 
-        using var client = CreateHttpClient();
+        using var client = await CreateHttpClient();
         var response = await client.PostAsync("/api/category", new StringContent(JsonConvert.SerializeObject(createCategoryCommand), Encoding.UTF8, "application/json"));
         Assert.IsTrue(response.IsSuccessStatusCode);
     }

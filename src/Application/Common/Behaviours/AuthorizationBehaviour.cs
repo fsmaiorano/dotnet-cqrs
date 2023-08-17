@@ -1,19 +1,20 @@
-﻿using System.Reflection;
-using Application.Common.Security;
-using MediatR;
+﻿// using MediatR;
 
-namespace Application;
+// namespace Application;
 
-public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
-{
-    public AuthorizationBehaviour()
-    {
+// public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+// {
+//     public AuthorizationBehaviour()
+//     {
 
-    }
+//     }
 
-    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-    {
-        var authAttribute = request.GetType().GetCustomAttribute<AuthorizeAttribute>();
-        throw new NotImplementedException();
-    }
-}
+//     public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+//     {
+//         // var authAttribute = request.GetType().GetCustomAttribute<AuthorizeAttribute>();
+
+//         //Get header
+
+//         throw new NotImplementedException();
+//     }
+// }

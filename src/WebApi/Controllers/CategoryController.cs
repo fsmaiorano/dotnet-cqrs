@@ -4,6 +4,7 @@ using Application.UseCases.Category.Commands.DeleteCategory;
 using Application.UseCases.Category.Commands.UpdateCategory;
 using Application.UseCases.Category.Queries.GetCategory;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -11,6 +12,7 @@ namespace WebApi.Controllers;
 public class CategoryController : BaseController
 {
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<int>> Create(CreateCategoryCommand command)
     {
@@ -18,6 +20,7 @@ public class CategoryController : BaseController
     }
 
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginatedList<CategoryEntity>>> GetWithPagination([FromQuery] GetCategoryWithPaginationQuery query)
     {
@@ -25,6 +28,7 @@ public class CategoryController : BaseController
     }
 
     [HttpPut]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
@@ -39,6 +43,7 @@ public class CategoryController : BaseController
     }
 
     [HttpDelete]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> Delete(int id)

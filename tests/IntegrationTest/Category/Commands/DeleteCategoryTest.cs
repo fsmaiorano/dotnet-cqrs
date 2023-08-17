@@ -37,7 +37,7 @@ public class DeleteCategoryTest : Testing
         Assert.IsNotNull(createdCategoryId);
         Assert.IsTrue(createdCategoryId > 0);
 
-        using var client = CreateHttpClient();
+        using var client = await CreateHttpClient();
         var response = await client.DeleteAsync($"/api/category?id={createdCategoryId}");
 
         var category = await FindAsync<CategoryEntity>(createdCategoryId);

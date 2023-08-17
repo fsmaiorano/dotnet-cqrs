@@ -43,4 +43,22 @@ public class GetAuthUserTest : Testing
 
         Assert.IsNotNull(userToken);
     }
+
+
+    [TestMethod]
+    public async Task ShouldGenerateAnValidToken()
+    {
+        var query = new GetAuthUserQuery() { Email = email, PasswordHash = password };
+
+        var storedUser = await SendAsync(query);
+
+        Assert.IsNotNull(storedUser);
+
+        var userToken = await _authService.GenerateToken(storedUser!);
+
+        Assert.IsNotNull(userToken);
+
+        var isValidToken = await _authService.ValidateToken(userToken!);
+        Assert.IsTrue(isValidToken);
+    }
 }

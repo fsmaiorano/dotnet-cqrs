@@ -58,7 +58,7 @@ public class UpdateCategoryTest : Testing
             Name = category.Name,
         };
 
-        using var client = CreateHttpClient();
+        using var client = await CreateHttpClient();
         var response = await client.PutAsync($"/api/category?id={category.Id}", new StringContent(JsonConvert.SerializeObject(updateCategoryCommand), Encoding.UTF8, "application/json"));
         Assert.IsTrue(response.IsSuccessStatusCode);
 

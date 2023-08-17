@@ -23,7 +23,7 @@ public class CreateUserTest : Testing
     {
         var createUserCommand = GenerateCreateUserCommand();
 
-        using var client = CreateHttpClient();
+        using var client = await CreateHttpClient();
         var response = await client.PostAsync("/api/user",
                                                new StringContent(
                                                 JsonConvert.SerializeObject(createUserCommand),

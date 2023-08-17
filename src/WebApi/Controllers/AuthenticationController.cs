@@ -20,10 +20,18 @@ namespace WebApi.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult> DoAuthentication([FromQuery] GetAuthUserQuery query)
         {
-            var user = await Mediator.Send(query);
+            // var user = await Mediator.Send(query);
 
-            if (user == null)
-                return BadRequest(new BadRequestError() { Message = "Invalid Credentials" });
+            // if (user == null)
+            //     return BadRequest(new BadRequestError() { Message = "Invalid Credentials" });
+
+            // Only for testing
+            var user = new UserAuthenticationDto
+            {
+                Id = 1,
+                Name = "Test",
+                Email = "test@test.com"
+            };
 
             var token = await _authService.GenerateToken(user);
 

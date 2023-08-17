@@ -4,6 +4,7 @@ using Application.UseCases.Tag.Commands.DeleteTag;
 using Application.UseCases.Tag.Commands.UpdateTag;
 using Application.UseCases.Tag.Queries.GetTag;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -11,6 +12,7 @@ namespace WebApi.Controllers;
 public class TagController : BaseController
 {
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<int>> Create(CreateTagCommand command)
     {
@@ -18,6 +20,7 @@ public class TagController : BaseController
     }
 
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginatedList<TagEntity>>> GetWithPagination([FromQuery] GetTagWithPaginationQuery query)
     {
@@ -25,6 +28,7 @@ public class TagController : BaseController
     }
 
     [HttpPut]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
@@ -39,6 +43,7 @@ public class TagController : BaseController
     }
 
     [HttpDelete]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> Delete(int id)

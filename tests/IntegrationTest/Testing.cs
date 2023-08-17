@@ -1,4 +1,6 @@
-﻿using Application.Common.Interfaces;
+﻿using System.Net.Http.Headers;
+using Application.Common.Interfaces;
+using Application.UseCases.User.Queries.GetUser;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -78,10 +80,22 @@ public class Testing
         return await context.Set<TEntity>().CountAsync();
     }
 
-    public static HttpClient CreateHttpClient()
+    public async Task<HttpClient> CreateHttpClient()
     {
         // using var application = new CustomWebApplicationFactory();
         // using var client = application.CreateClient();
-        return _factory.CreateClient();
+
+        var user = new UserAuthenticationDto
+        {
+            Id = 1,
+            Name = "Test",
+            Email = "test@test.com"
+        };
+
+        var client = _factory.CreateClient();
+
+        client.DefaultRequestHeaders.Authorization = 
+                        new AuthenticationHeaderValue("Bearer",await _authService.GenerateToken(user));
+        return client;
     }
 }
