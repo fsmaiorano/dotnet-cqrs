@@ -1,6 +1,8 @@
-﻿using Application.UseCases.Category.Queries.GetCategory;
+﻿using Application.Common.Models;
+using Application.UseCases.Category.Queries.GetCategory;
 using Bogus;
 using Domain.Entities;
+using Newtonsoft.Json;
 
 namespace IntegrationTest.Category.Queries;
 
@@ -37,10 +39,25 @@ public class GetCategoryTest : Testing
 
 
     [TestMethod]
-    public async Task ShouldReturnPaginatedListWithCategory()
+    public async Task ShouldReturnPaginatedListWithCategoryUseCase()
     {
         var query = new GetCategoryWithPaginationQuery() { PageSize = 9999, PageNumber = 1 };
         var result = await SendAsync(query);
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.Items.Count > 0);
+    }
+
+    [TestMethod]
+    public async Task ShouldReturnPaginatedListWithCategoryController()
+    {
+        using var client = await CreateHttpClient();
+        var response = await client.GetAsync("/api/category?PageSize=9999&PageNumber=1");
+        Assert.IsTrue(response.IsSuccessStatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.IsNotNull(content);
+
+        var result = JsonConvert.DeserializeObject<PaginatedList<CategoryEntity>>(content);
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Items.Count > 0);
     }

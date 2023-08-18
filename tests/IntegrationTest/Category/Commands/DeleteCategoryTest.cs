@@ -27,7 +27,7 @@ public class DeleteCategoryTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldDeleteCategoryWebApi()
+    public async Task ShouldDeleteCategoryController()
     {
         var createCategoryCommand = CreateCategoryTest.GenerateCreateCategoryCommand();
         var createdCategoryId = await SendAsync(createCategoryCommand);

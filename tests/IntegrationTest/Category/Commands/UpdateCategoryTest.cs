@@ -37,7 +37,7 @@ public class UpdateCategoryTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldUpdateCategoryWebApi()
+    public async Task ShouldUpdateCategoryController()
     {
         var createCategoryCommand = CreateCategoryTest.GenerateCreateCategoryCommand();
         var createdCategoryId = await SendAsync(createCategoryCommand);

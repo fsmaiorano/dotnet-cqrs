@@ -25,7 +25,7 @@ public class CreateTagTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldCreateTagWebApi()
+    public async Task ShouldCreateTagController()
     {
         var createTagCommand = GenerateCreateTagCommand();
 

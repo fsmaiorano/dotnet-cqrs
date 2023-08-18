@@ -28,7 +28,7 @@ public class DeleteTagTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldDeleteTagWebApi()
+    public async Task ShouldDeleteTagController()
     {
         var createTagCommand = CreateTagTest.GenerateCreateTagCommand();
 

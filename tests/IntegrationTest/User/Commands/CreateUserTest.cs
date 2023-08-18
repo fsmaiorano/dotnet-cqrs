@@ -19,7 +19,7 @@ public class CreateUserTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldCreateUserWebApi()
+    public async Task ShouldCreateUserController()
     {
         var createUserCommand = GenerateCreateUserCommand();
 

@@ -28,7 +28,7 @@ public class DeletePostTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldDeletePostWebApi()
+    public async Task ShouldDeletePostController()
     {
         var createPostCommand = await CreatePostTest.GenerateCreatePostCommand();
 

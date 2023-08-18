@@ -25,7 +25,7 @@ public class CreateCategoryTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldCreateCategoryWebApi()
+    public async Task ShouldCreateCategoryController()
     {
         var createCategoryCommand = GenerateCreateCategoryCommand();
 

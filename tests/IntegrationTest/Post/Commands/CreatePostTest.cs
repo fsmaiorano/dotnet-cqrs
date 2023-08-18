@@ -28,7 +28,7 @@ public class CreatePostTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldCreatePostWebApi()
+    public async Task ShouldCreatePostController()
     {
         var createPostCommand = await GenerateCreatePostCommand();
 

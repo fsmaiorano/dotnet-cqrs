@@ -34,7 +34,7 @@ public class UpdatePostTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldUpdatePostWebApi()
+    public async Task ShouldUpdatePostController()
     {
         var createPostCommand = await CreatePostTest.GenerateCreatePostCommand();
 
