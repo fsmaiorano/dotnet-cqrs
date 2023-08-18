@@ -1,8 +1,10 @@
-﻿using Application.UseCases.Category.Commands.CreateCategory;
+﻿using System.Text;
+using Application.UseCases.Category.Commands.CreateCategory;
 using Application.UseCases.Post.Commands.CreatePost;
 using Application.UseCases.Tag.Commands.CreateTag;
 using Application.UseCases.User.Commands.CreateUser;
 using Bogus;
+using Newtonsoft.Json;
 
 namespace IntegrationTest.Post.Commands;
 
@@ -16,13 +18,23 @@ public class CreatePostTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldCreatePost()
+    public async Task ShouldCreatePostUseCase()
     {
         var createPostCommand = await GenerateCreatePostCommand();
 
         var createdPostId = await SendAsync(createPostCommand);
         Assert.IsNotNull(createdPostId);
         Assert.IsTrue(createdPostId > 0);
+    }
+
+    [TestMethod]
+    public async Task ShouldCreatePostWebApi()
+    {
+        var createPostCommand = await GenerateCreatePostCommand();
+
+        using var client = await CreateHttpClient();
+        var response = await client.PostAsync("/api/post", new StringContent(JsonConvert.SerializeObject(createPostCommand), Encoding.UTF8, "application/json"));
+        Assert.IsTrue(response.IsSuccessStatusCode);
     }
 
     [DataTestMethod]

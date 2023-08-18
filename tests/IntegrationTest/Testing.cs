@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace IntegrationTest;
 
@@ -93,9 +94,35 @@ public class Testing
         };
 
         var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.BaseAddress = new Uri("http://localhost:5000");
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _authService.GenerateToken(user));
 
-        client.DefaultRequestHeaders.Authorization = 
-                        new AuthenticationHeaderValue("Bearer",await _authService.GenerateToken(user));
         return client;
     }
+
+    // public async Task<HttpResponseMessage> PostAsync(string url, object data)
+    // {
+    //     using var client = await CreateHttpClient();
+    //     return await client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(data)));
+    // }
+
+    // public async Task<HttpResponseMessage> PutAsync(string url, object data)
+    // {
+    //     using var client = await CreateHttpClient();
+    //     return await client.PutAsync(url, new StringContent(JsonConvert.SerializeObject(data)));
+    // }
+
+    // public async Task<HttpResponseMessage> DeleteAsync(string url)
+    // {
+    //     using var client = await CreateHttpClient();
+    //     return await client.DeleteAsync(url);
+    // }
+
+    // public async Task<HttpResponseMessage> GetAsync(string url)
+    // {
+    //     using var client = await CreateHttpClient();
+    //     return await client.GetAsync(url);
+    // }
 }

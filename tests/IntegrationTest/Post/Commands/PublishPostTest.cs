@@ -1,10 +1,12 @@
-﻿using Application.UseCases.Category.Commands.CreateCategory;
+﻿using System.Text;
+using Application.UseCases.Category.Commands.CreateCategory;
 using Application.UseCases.Post.Commands.CreatePost;
 using Application.UseCases.Post.Commands.UpdatePost;
 using Application.UseCases.Tag.Commands.CreateTag;
 using Application.UseCases.User.Commands.CreateUser;
 using Bogus;
 using Domain.Entities;
+using Newtonsoft.Json;
 
 namespace IntegrationTest.Post.Commands;
 
@@ -18,7 +20,7 @@ public class PublishPostTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldPublishPost()
+    public async Task ShouldPublishPostUseCase()
     {
         var createPostCommand = await GenerateCreatePostCommand();
 
@@ -34,6 +36,31 @@ public class PublishPostTest : Testing
         };
 
         await SendAsync(publishPostCommand);
+
+        var storedPost = await FindAsync<PostEntity>(createdPostId);
+        Assert.IsTrue(storedPost!.IsPublished);
+        Assert.IsNotNull(storedPost.UpdateDate);
+    }
+
+    [TestMethod]
+    public async Task ShouldPublishPostWebApi()
+    {
+        var createPostCommand = await GenerateCreatePostCommand();
+
+        var createdPostId = await SendAsync(createPostCommand);
+        Assert.IsNotNull(createdPostId);
+        Assert.IsTrue(createdPostId > 0);
+
+        var publishPostCommand = new PublishPostCommand()
+        {
+            Id = createdPostId,
+            AuthorId = createPostCommand.AuthorId,
+            IsPublished = true
+        };
+
+        using var client = await CreateHttpClient();
+        var response = await client.PutAsync($"/api/post/publish?id={createdPostId}", new StringContent(JsonConvert.SerializeObject(publishPostCommand), Encoding.UTF8, "application/json"));
+        Assert.IsTrue(response.IsSuccessStatusCode);
 
         var storedPost = await FindAsync<PostEntity>(createdPostId);
         Assert.IsTrue(storedPost!.IsPublished);

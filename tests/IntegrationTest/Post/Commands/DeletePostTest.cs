@@ -13,7 +13,7 @@ public class DeletePostTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldDeletePost()
+    public async Task ShouldDeletePostUseCase()
     {
         var createPostCommand = await CreatePostTest.GenerateCreatePostCommand();
 
@@ -23,7 +23,23 @@ public class DeletePostTest : Testing
 
         await SendAsync(new DeletePostCommand(createdPostId));
 
-        var category = await FindAsync<PostEntity>(createdPostId);
-        Assert.IsNull(category);
+        var postEntity = await FindAsync<PostEntity>(createdPostId);
+        Assert.IsNull(postEntity);
+    }
+
+    [TestMethod]
+    public async Task ShouldDeletePostWebApi()
+    {
+        var createPostCommand = await CreatePostTest.GenerateCreatePostCommand();
+
+        var createdPostId = await SendAsync(createPostCommand);
+        Assert.IsNotNull(createdPostId);
+        Assert.IsTrue(createdPostId > 0);
+
+        using var client = await CreateHttpClient();
+        var response = await client.DeleteAsync($"/api/post?id={createdPostId}");
+
+        var postEntity = await FindAsync<PostEntity>(createdPostId);
+        Assert.IsNull(postEntity);
     }
 }

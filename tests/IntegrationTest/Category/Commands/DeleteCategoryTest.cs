@@ -1,8 +1,5 @@
-﻿using Application.UseCases.Category.Commands.CreateCategory;
-using Application.UseCases.Category.Commands.DeleteCategory;
-using Bogus;
+﻿using Application.UseCases.Category.Commands.DeleteCategory;
 using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 
 namespace IntegrationTest.Category.Commands;
 

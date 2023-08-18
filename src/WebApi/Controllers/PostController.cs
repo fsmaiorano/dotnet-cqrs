@@ -42,6 +42,21 @@ public class PostController : BaseController
         return NoContent();
     }
 
+    [HttpPut("Publish")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
+    public async Task<ActionResult> Publish(int id, PublishPostCommand command)
+    {
+        if (id != command.Id)
+            return BadRequest();
+
+        await Mediator.Send(command);
+
+        return NoContent();
+    }
+
     [HttpDelete]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -1,5 +1,7 @@
-﻿using Application.UseCases.Tag.Commands.CreateTag;
+﻿using System.Text;
+using Application.UseCases.Tag.Commands.CreateTag;
 using Bogus;
+using Newtonsoft.Json;
 
 namespace IntegrationTest.Tag.Commands;
 
@@ -13,13 +15,23 @@ public class CreateTagTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldCreateTag()
+    public async Task ShouldCreateTagUseCase()
     {
         var createTagCommand = GenerateCreateTagCommand();
 
         var createdTagId = await SendAsync(createTagCommand);
         Assert.IsNotNull(createdTagId);
         Assert.IsTrue(createdTagId > 0);
+    }
+
+    [TestMethod]
+    public async Task ShouldCreateTagWebApi()
+    {
+        var createTagCommand = GenerateCreateTagCommand();
+
+        using var client = await CreateHttpClient();
+        var response = await client.PostAsync("/api/tag", new StringContent(JsonConvert.SerializeObject(createTagCommand), Encoding.UTF8, "application/json"));
+        Assert.IsTrue(response.IsSuccessStatusCode);
     }
 
     [DataTestMethod]
