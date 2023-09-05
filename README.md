@@ -24,7 +24,11 @@ The implementation between the Api and the rest of the application is built with
 - [x] Read a blog post
 - [x] Update a blog post
 - [x] Delete a blog post
+<<<<<<< HEAD
 - [ ] Set public/privete the blog post (by author)
+=======
+- [x] Set published/not published the blog post (by author)
+>>>>>>> dev
 
 - [x] Create a Tag
 - [x] Read a Tag
@@ -42,6 +46,10 @@ The implementation between the Api and the rest of the application is built with
 - [x] Delete a User
 
 - [x] Authenticate a User
+<<<<<<< HEAD
+=======
+- [ ] Validate if an user is authenticated
+>>>>>>> dev
 
 - [ ] Create a comment
 - [ ] Read a comment

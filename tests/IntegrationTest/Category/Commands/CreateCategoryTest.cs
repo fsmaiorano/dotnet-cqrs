@@ -1,5 +1,7 @@
-﻿using Application.UseCases.Category.Commands.CreateCategory;
+﻿using System.Text;
+using Application.UseCases.Category.Commands.CreateCategory;
 using Bogus;
+using Newtonsoft.Json;
 
 namespace IntegrationTest.Category.Commands;
 
@@ -13,13 +15,23 @@ public class CreateCategoryTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldCreateCategory()
+    public async Task ShouldCreateCategoryUseCase()
     {
         var createCategoryCommand = GenerateCreateCategoryCommand();
 
         var createdCategoryId = await SendAsync(createCategoryCommand);
         Assert.IsNotNull(createdCategoryId);
         Assert.IsTrue(createdCategoryId > 0);
+    }
+
+    [TestMethod]
+    public async Task ShouldCreateCategoryController()
+    {
+        var createCategoryCommand = GenerateCreateCategoryCommand();
+
+        using var client = await CreateHttpClient();
+        var response = await client.PostAsync("/api/category", new StringContent(JsonConvert.SerializeObject(createCategoryCommand), Encoding.UTF8, "application/json"));
+        Assert.IsTrue(response.IsSuccessStatusCode);
     }
 
     [DataTestMethod]

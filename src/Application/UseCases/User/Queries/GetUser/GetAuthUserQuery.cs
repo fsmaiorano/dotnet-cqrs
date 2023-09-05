@@ -28,7 +28,8 @@ public class GetAuthUsersQueryHandler : IRequestHandler<GetAuthUserQuery, UserAu
         if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.PasswordHash))
             return null;
 
-        var storedUser = await _context.Users.Where(x => x.PasswordHash!.Equals(request.PasswordHash) && x.Email.Equals(request.Email)).ProjectTo<UserAuthenticationDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
+        var storedUser = await _context.Users.Where(x => x.PasswordHash!.Equals(request.PasswordHash) && x.Email.Equals(request.Email))
+                                             .ProjectTo<UserAuthenticationDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
 
         if (storedUser is null || !request.PasswordHash.Equals(storedUser.PasswordHash))
             return null;

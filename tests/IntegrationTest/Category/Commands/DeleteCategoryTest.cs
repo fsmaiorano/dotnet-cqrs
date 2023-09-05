@@ -1,6 +1,4 @@
-﻿using Application.UseCases.Category.Commands.CreateCategory;
-using Application.UseCases.Category.Commands.DeleteCategory;
-using Bogus;
+﻿using Application.UseCases.Category.Commands.DeleteCategory;
 using Domain.Entities;
 
 namespace IntegrationTest.Category.Commands;
@@ -15,7 +13,7 @@ public class DeleteCategoryTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldDeleteCategory()
+    public async Task ShouldDeleteCategoryUseCase()
     {
         var createCategoryCommand = CreateCategoryTest.GenerateCreateCategoryCommand();
         var createdCategoryId = await SendAsync(createCategoryCommand);
@@ -23,6 +21,21 @@ public class DeleteCategoryTest : Testing
         Assert.IsTrue(createdCategoryId > 0);
 
         await SendAsync(new DeleteCategoryCommand(createdCategoryId));
+
+        var category = await FindAsync<CategoryEntity>(createdCategoryId);
+        Assert.IsNull(category);
+    }
+
+    [TestMethod]
+    public async Task ShouldDeleteCategoryController()
+    {
+        var createCategoryCommand = CreateCategoryTest.GenerateCreateCategoryCommand();
+        var createdCategoryId = await SendAsync(createCategoryCommand);
+        Assert.IsNotNull(createdCategoryId);
+        Assert.IsTrue(createdCategoryId > 0);
+
+        using var client = await CreateHttpClient();
+        var response = await client.DeleteAsync($"/api/category?id={createdCategoryId}");
 
         var category = await FindAsync<CategoryEntity>(createdCategoryId);
         Assert.IsNull(category);

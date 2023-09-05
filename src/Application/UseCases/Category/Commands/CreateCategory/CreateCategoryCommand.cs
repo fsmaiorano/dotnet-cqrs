@@ -24,9 +24,8 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
     {
         try
         {
-            var entity = new CategoryEntity
+            var entity = new CategoryEntity(name: request.Name!)
             {
-                Name = request.Name,
                 Slug = request.Slug
             };
 

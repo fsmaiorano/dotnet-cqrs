@@ -1,15 +1,17 @@
 ﻿using System.Text;
 using Application.UseCases.Category.Commands.CreateCategory;
 using Application.UseCases.Post.Commands.CreatePost;
+using Application.UseCases.Post.Commands.UpdatePost;
 using Application.UseCases.Tag.Commands.CreateTag;
 using Application.UseCases.User.Commands.CreateUser;
 using Bogus;
+using Domain.Entities;
 using Newtonsoft.Json;
 
 namespace IntegrationTest.Post.Commands;
 
 [TestClass]
-public class CreatePostTest : Testing
+public class PublishPostTest : Testing
 {
     [TestInitialize]
     public void TestInitialize()
@@ -18,23 +20,51 @@ public class CreatePostTest : Testing
     }
 
     [TestMethod]
-    public async Task ShouldCreatePostUseCase()
+    public async Task ShouldPublishPostUseCase()
     {
         var createPostCommand = await GenerateCreatePostCommand();
 
         var createdPostId = await SendAsync(createPostCommand);
         Assert.IsNotNull(createdPostId);
         Assert.IsTrue(createdPostId > 0);
+
+        var publishPostCommand = new PublishPostCommand()
+        {
+            Id = createdPostId,
+            AuthorId = createPostCommand.AuthorId,
+            IsPublished = true
+        };
+
+        await SendAsync(publishPostCommand);
+
+        var storedPost = await FindAsync<PostEntity>(createdPostId);
+        Assert.IsTrue(storedPost!.IsPublished);
+        Assert.IsNotNull(storedPost.UpdateDate);
     }
 
     [TestMethod]
-    public async Task ShouldCreatePostController()
+    public async Task ShouldPublishPostController()
     {
         var createPostCommand = await GenerateCreatePostCommand();
 
+        var createdPostId = await SendAsync(createPostCommand);
+        Assert.IsNotNull(createdPostId);
+        Assert.IsTrue(createdPostId > 0);
+
+        var publishPostCommand = new PublishPostCommand()
+        {
+            Id = createdPostId,
+            AuthorId = createPostCommand.AuthorId,
+            IsPublished = true
+        };
+
         using var client = await CreateHttpClient();
-        var response = await client.PostAsync("/api/post", new StringContent(JsonConvert.SerializeObject(createPostCommand), Encoding.UTF8, "application/json"));
+        var response = await client.PutAsync($"/api/post/publish?id={createdPostId}", new StringContent(JsonConvert.SerializeObject(publishPostCommand), Encoding.UTF8, "application/json"));
         Assert.IsTrue(response.IsSuccessStatusCode);
+
+        var storedPost = await FindAsync<PostEntity>(createdPostId);
+        Assert.IsTrue(storedPost!.IsPublished);
+        Assert.IsNotNull(storedPost.UpdateDate);
     }
 
     [DataTestMethod]

@@ -11,6 +11,7 @@ public class GetUserTest : Testing
     public async Task TestInitialize()
     {
         var userEntity = new Faker<UserEntity>()
+                         .CustomInstantiator(f => new UserEntity(f.Person.UserName, f.Person.Email, f.Random.Hash(64)))
                          .RuleFor(x => x.Name, f => f.Person.FirstName)
                          .RuleFor(x => x.Email, f => f.Person.Email)
                          .RuleFor(x => x.Bio, f => f.Lorem.Sentence())
@@ -22,6 +23,7 @@ public class GetUserTest : Testing
         await AddAsync(userEntity);
 
         userEntity = new Faker<UserEntity>()
+                     .CustomInstantiator(f => new UserEntity(f.Person.UserName, f.Person.Email, f.Random.Hash(64)))
                      .RuleFor(x => x.Name, f => f.Person.FirstName)
                      .RuleFor(x => x.Email, f => f.Person.Email)
                      .RuleFor(x => x.Bio, f => f.Lorem.Sentence())

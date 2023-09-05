@@ -4,6 +4,7 @@ using Application.UseCases.Post.Commands.DeletePost;
 using Application.UseCases.Post.Commands.UpdatePost;
 using Application.UseCases.Post.Queries.GetPost;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -11,6 +12,7 @@ namespace WebApi.Controllers;
 public class PostController : BaseController
 {
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<int>> Create(CreatePostCommand command)
     {
@@ -18,6 +20,7 @@ public class PostController : BaseController
     }
 
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginatedList<PostEntity>>> GetWithPagination([FromQuery] GetPostWithPaginationQuery query)
     {
@@ -25,6 +28,7 @@ public class PostController : BaseController
     }
 
     [HttpPut]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
@@ -38,7 +42,23 @@ public class PostController : BaseController
         return NoContent();
     }
 
+    [HttpPut("Publish")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
+    public async Task<ActionResult> Publish(int id, PublishPostCommand command)
+    {
+        if (id != command.Id)
+            return BadRequest();
+
+        await Mediator.Send(command);
+
+        return NoContent();
+    }
+
     [HttpDelete]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> Delete(int id)

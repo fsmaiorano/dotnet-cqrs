@@ -10,6 +10,8 @@ namespace IntegrationTest.Post.Queries;
 [TestClass]
 public class GetPostTest : Testing
 {
+    private int _createdId;
+
     [TestInitialize]
     public async Task TestInitialize()
     {
@@ -47,7 +49,8 @@ public class GetPostTest : Testing
         createPostCommand.CategoryId = createdCategoryId;
         createPostCommand.Tags = new List<int> { createdTagId };
 
-        await SendAsync(createPostCommand);
+        var createdId = await SendAsync(createPostCommand);
+        _createdId = createdId;
     }
 
     [TestMethod]
@@ -68,5 +71,14 @@ public class GetPostTest : Testing
         var result = await SendAsync(query);
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Items.Count > 0);
+    }
+
+    [TestMethod]
+    public async Task ShouldReturnPostById()
+    {
+        var query = new GetPostByIdQuery() { Id = _createdId };
+        var result = await SendAsync(query);
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.Id == _createdId);
     }
 }
