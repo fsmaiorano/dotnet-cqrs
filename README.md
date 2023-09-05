@@ -3,7 +3,7 @@
 This project is a full-stack application using clean architecture and CQRS pattern, that allows users to create, read, update, and delete blog posts.
 
 ## Architecture
-Clean architecture is used to separate the application into layers. The layers are as follows: application, domain, and infrastructure. The application layer contains use-cases and all core implementations. The domain layer contains the business logic and 
+Clean architecture is used to separate the application into layers. The layers are as follows: application, domain, and infrastructure. The application layer contains use-cases and all core implementations. The domain layer contains the business logic and
 models. The infrastructure layer contains the database context and migrations.
 
 The implementation between the Api and the rest of the application is built with CQRS (Command and Query Responsibility Segregation), a pattern that separates read and update operations for a data store.
@@ -24,11 +24,7 @@ The implementation between the Api and the rest of the application is built with
 - [x] Read a blog post
 - [x] Update a blog post
 - [x] Delete a blog post
-<<<<<<< HEAD
-- [ ] Set public/privete the blog post (by author)
-=======
 - [x] Set published/not published the blog post (by author)
->>>>>>> dev
 
 - [x] Create a Tag
 - [x] Read a Tag
@@ -46,10 +42,7 @@ The implementation between the Api and the rest of the application is built with
 - [x] Delete a User
 
 - [x] Authenticate a User
-<<<<<<< HEAD
-=======
 - [ ] Validate if an user is authenticated
->>>>>>> dev
 
 - [ ] Create a comment
 - [ ] Read a comment
