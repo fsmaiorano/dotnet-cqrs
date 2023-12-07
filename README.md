@@ -20,6 +20,8 @@ The implementation between the Api and the rest of the application is built with
 - JWT Authentication
 
 ## Goals
+- [ ] Implement WebUI with aspnet
+
 - [x] Create a blog post
 - [x] Read a blog post
 - [x] Update a blog post
